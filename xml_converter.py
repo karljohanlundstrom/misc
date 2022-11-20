@@ -1,5 +1,7 @@
+import pathlib
 import sys
 
+out_fpath = pathlib.Path(__file__).parent.joinpath('out.xml')
 
 def get_val(lst, index):
     try:
@@ -116,7 +118,7 @@ def main(fpath):
     lines = dct_2_xml(dict_2_convert)
 
     # Write lines
-    with open('out.xml', 'w') as fp:
+    with open(out_fpath, 'w') as fp:
         fp.writelines(lines)
 
 
