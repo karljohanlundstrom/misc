@@ -42,9 +42,10 @@ def dct_2_xml(dct, indent=0):
             lines.append(serialize(k, v, indent))
         elif isinstance(v, list):
             for i in v:
-                lines.append(' ' * 2 * indent + f'<{k}>\n')
-                lines.extend(dct_2_xml(i, indent + 1))
-                lines.append(' ' * 2 * indent + f'</{k}>\n')
+                if i:
+                    lines.append(' ' * 2 * indent + f'<{k}>\n')
+                    lines.extend(dct_2_xml(i, indent + 1))
+                    lines.append(' ' * 2 * indent + f'</{k}>\n')
         elif isinstance(v, dict):
             lines.append(' ' * 2 * indent + f'<{k}>\n')
             lines.extend(dct_2_xml(v, indent + 1))
@@ -68,6 +69,7 @@ def main(fpath):
         if key == 'P':
             if person_dct:
                 # Add person dict to person_lst
+                family_lst.append(family_dct)
                 family_sorted = sort_family_keys(family_lst)
                 person_dct['family'] = family_sorted
                 person_sorted = sort_person_keys(person_dct)
@@ -101,6 +103,7 @@ def main(fpath):
                 person_dct['address'] = address_dct
 
     # Add last person dict to person_lst
+    family_lst.append(family_dct)
     family_sorted = sort_family_keys(family_lst)
     person_dct['family'] = family_sorted
     person_sorted = sort_person_keys(person_dct)
@@ -119,7 +122,7 @@ def main(fpath):
 
 if __name__ == "__main__":
     argv = sys.argv[1:]
-    if len(argv) > 1:
-        print(f'ERROR: The program takes only one positional argument ({len(argv)} was given)')
+    if len(argv) != 1:
+        print(f'ERROR: The program takes only 1 positional argument ({len(argv)} was given)')
         sys.exit(1)
     main(argv[0])
